@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iris Flower Prediction</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>Iris Flower Prediction</h1>
+  <form method="POST" action="/" id="outputForm"> 
+    <div class="form-content">
+      <label for="sepal_length">Sepal Length:</label>
+      <input type="number" step="any" name="sepal_length" id="sepal_length" required><br>
+      <label for="sepal_width">Sepal Width:</label>
+      <input type="number" step="any" name="sepal_width" id="sepal_width" required><br>
+      <label for="petal_length">Petal Length:</label>
+      <input type="number" step="any" name="petal_length" id="petal_length" required><br>
+      <label for="petal_width">Petal Width:</label>
+      <input type="number" step="any" name="petal_width" id="petal_width" required><br>
+      <input type="submit" value="Predict">
+    </div>
+    <img src="{{ url_for('static', filename='flower_default.jpg') }}" alt="Image" class="image" id="flowerImage">
+  </form>
+  {% if prediction %}
+    <p id="prediction">Predicted Flower Class: {{ prediction }}</p>
+  {% endif %}
+
+  <script>
+    var flowerImage = document.getElementById('flowerImage');
+    var prediction = "{{ prediction }}"; // Assuming prediction is set dynamically
+
+    // Function to change image source based on prediction
+    function changeImage(prediction) {
+      switch(prediction) {
+        case 'Iris-setosa':
+          flowerImage.src = "{{ url_for('static', filename='setosa.png') }}";
+          break;
+        case 'Iris-versicolor':
+          flowerImage.src = "{{ url_for('static', filename='versicolor.png') }}";
+          break;
+        case 'Iris-virginica':
+          flowerImage.src = "{{ url_for('static', filename='virginica.png') }}";
+          break;
+        default:
+          flowerImage.src = "{{ url_for('static', filename='flower.jpg') }}";
+      }
+    }
+
+    // Call the function to initially set the image based on the prediction
+    changeImage(prediction);
+  </script>
+</body>
+</html>
